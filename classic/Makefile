@@ -15,5 +15,3 @@ up:
 test:
 	tests/tests.sh 2>&1
 
-test-rego:
-	opa test policy-rego/*.rego -v
