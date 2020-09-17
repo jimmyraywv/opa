@@ -1,0 +1,36 @@
+kind: ValidatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1beta1
+metadata:
+  name: opa-validating-webhook
+  #namespace: opa
+  labels:
+    app: opa
+    owner: __OWNER_VALUE__
+webhooks:
+  - name: validating-webhook.openpolicyagent.org
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources:
+          - pods
+          - services
+          - replicasets
+          - deployments
+          - daemonsets
+          - cronjobs
+          - jobs
+          - ingresses
+          - roles
+          - statefulsets
+          - podtemplates
+          - configmaps
+          - secrets
+    clientConfig:
+      caBundle: __CA_BUNDLE_VALUE__
+      service:
+        namespace: opa
+        name: opa
+    namespaceSelector:
+      matchExpressions:
+      - {key: opa-webhook, operator: NotIn, values: [ignore]}
